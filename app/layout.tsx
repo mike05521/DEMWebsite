@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Big_Shoulders_Display, IBM_Plex_Sans } from "next/font/google";
+import { Big_Shoulders, IBM_Plex_Sans } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const display = Big_Shoulders_Display({
+const display = Big_Shoulders({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["600", "700", "800", "900"],
+  adjustFontFallback: false,
 });
 
 const ibm = IBM_Plex_Sans({
