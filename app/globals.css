@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0a0f14;
+  --red: #c62828;
+  --red-deep: #9b1c1c;
+  --cream: #f4f1ea;
+  --cream-card: #e6e2d8;
+  --silver: #c5c9ce;
+  --muted: #8b9298;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-red: var(--red);
+  --color-red-deep: var(--red-deep);
+  --color-cream: var(--cream);
+  --color-cream-card: var(--cream-card);
+  --color-silver: var(--silver);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-ibm), "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), "Big Shoulders Display", ui-sans-serif, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: #f4f1ea;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01" on;
+}
+
+::selection {
+  background: var(--red);
+  color: #fff;
+}
+
+a {
+  text-underline-offset: 0.18em;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
