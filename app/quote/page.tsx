@@ -21,8 +21,12 @@ export default function QuotePage() {
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-silver">
             Name, company, email, phone, service, material, quantity, due date,
-            and notes. Attach STEP, IGES, DXF, DWG, or PDF here — the files
-            travel with the form.
+            and notes. The file picker accepts STEP, IGES, DXF, DWG, or PDF.
+            This GitHub Pages preview is static and cannot store uploads — call{" "}
+            <a href={site.phoneHref} className="text-white underline">
+              {site.phoneDisplay}
+            </a>{" "}
+            to send the job.
           </p>
         </div>
       </section>

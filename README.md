@@ -1,23 +1,26 @@
 # David Engineering & Manufacturing
 
-Production marketing site for [David Engineering & Manufacturing, Inc.](https://davidengineering.com) — precision metal manufacturing in Corona, CA since 1972.
+Production marketing site for David Engineering & Manufacturing, Inc. — precision metal manufacturing in Corona, CA since 1972.
 
-Next.js App Router, TypeScript, Tailwind CSS.
+Next.js App Router, TypeScript, Tailwind CSS. Built as a **static export** for GitHub Pages.
+
+**Public preview:** https://mike05521.github.io/DEMWebsite/
 
 ## Stack
 
-- Next.js 16 (App Router)
+- Next.js 16 (App Router, `output: "export"`)
 - TypeScript
 - Tailwind CSS 4
-- Big Shoulders Display + IBM Plex Sans
+- Big Shoulders + IBM Plex Sans
+- `basePath` `/DEMWebsite` so assets and links work on the project Pages site
 
 ## Scripts
 
 ```bash
 npm install
-npm run dev
-npm run build
-npm start
+npm run dev      # open http://localhost:3000/DEMWebsite/
+npm run build    # writes static HTML to out/
+npx serve out    # local preview of the Pages export
 ```
 
 ## Routes
@@ -34,14 +37,17 @@ npm start
 | `/finishing-services` | Hardware, powder, plate, mark |
 | `/additional-services` | Assembly and secondary ops |
 | `/quality` | ISO 9001:2015 |
-| `/quote` | RFQ with drawing upload |
-| `POST /api/quote` | Quote + file intake |
+| `/quote` | RFQ UI (static preview — no server upload) |
 
-## Quote uploads
+GitHub Pages cannot run a Node server. The quote form stays on the site as a usable UI; it cannot store files. Call 951-735-5200 to send a job. A future Node host (for example Vercel) can add `POST /api/quote` again.
 
-`POST /api/quote` accepts `multipart/form-data` with STEP, IGES, DXF, DWG, or PDF (max 5 files, 20 MB each). Files and a `request.json` are stored under `data/quotes/` (gitignored).
+## Deploy
 
-Set `QUOTE_NOTIFY_WEBHOOK` later if you want inbound requests forwarded. The form never asks the visitor to email the drawing after submit.
+Push to `main` (or `cursor/dem-nextjs-site-e285`) runs `.github/workflows/pages.yml` and deploys the `out/` folder to GitHub Pages.
+
+Repo → Settings → Pages → Source: **GitHub Actions**.
+
+The repository must be **public** (or the owner needs GitHub Pro) for the Pages URL to be visible to everyone.
 
 ## Facts this site will not invent
 

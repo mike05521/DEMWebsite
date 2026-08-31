@@ -2,7 +2,10 @@ export const site = {
   legalName: "David Engineering & Manufacturing, Inc.",
   shortName: "David Engineering",
   tagline: "Precision metal manufacturing since 1972",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://davidengineering.com",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    "https://mike05521.github.io/DEMWebsite",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? "/DEMWebsite",
   phoneDisplay: "951-735-5200",
   phoneHref: "tel:9517355200",
   fax: "951-737-4982",

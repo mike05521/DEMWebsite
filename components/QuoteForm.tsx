@@ -16,6 +16,7 @@ type Status =
   | { state: "idle" }
   | { state: "submitting" }
   | { state: "success"; reference: string; files: string[] }
+  | { state: "static"; files: string[] }
   | { state: "error"; message: string };
 
 export function QuoteForm() {
@@ -26,10 +27,17 @@ export function QuoteForm() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    if (String(data.get("company_website") ?? "").trim()) {
+      return;
+    }
+
     setStatus({ state: "submitting" });
 
+    const files = fileNames;
+    const apiUrl = `${site.basePath}/api/quote`;
+
     try {
-      const response = await fetch("/api/quote", {
+      const response = await fetch(apiUrl, {
         method: "POST",
         body: data,
       });
@@ -41,10 +49,7 @@ export function QuoteForm() {
       };
 
       if (!response.ok || !payload.ok) {
-        setStatus({
-          state: "error",
-          message: payload.error ?? "We could not submit the request. Try again.",
-        });
+        setStatus({ state: "static", files });
         return;
       }
 
@@ -56,10 +61,7 @@ export function QuoteForm() {
         files: payload.files ?? [],
       });
     } catch {
-      setStatus({
-        state: "error",
-        message: "Network error. Call the shop if this continues.",
-      });
+      setStatus({ state: "static", files });
     }
   }
 
@@ -139,14 +141,14 @@ export function QuoteForm() {
           accept={accept}
           multiple
           onChange={(event) => {
-            const files = Array.from(event.target.files ?? []);
-            setFileNames(files.map((file) => file.name));
+            const selected = Array.from(event.target.files ?? []);
+            setFileNames(selected.map((file) => file.name));
           }}
           className="border border-dashed border-ink/25 bg-cream px-3 py-6 text-ink file:mr-4 file:border-0 file:bg-red file:px-3 file:py-2 file:text-xs file:font-semibold file:tracking-wider file:text-white file:uppercase"
         />
         <span className="text-xs text-ink/55">
           Up to {maxUploadFiles} files, {Math.round(maxUploadBytes / (1024 * 1024))}{" "}
-          MB each. Attach the drawing with this form.
+          MB each. This GitHub Pages preview cannot store files on a server.
         </span>
         {fileNames.length ? (
           <ul className="text-xs text-ink/70">
@@ -167,14 +169,31 @@ export function QuoteForm() {
 
       {status.state === "success" ? (
         <div className="border border-ink/10 bg-cream p-4 text-sm text-ink">
-          <p className="font-semibold">We have your request{status.files.length ? " and drawings" : ""}.</p>
+          <p className="font-semibold">
+            We have your request{status.files.length ? " and drawings" : ""}.
+          </p>
           <p className="mt-2 text-ink/70">
             Reference {status.reference}. Our team will review the job and get
-            back to you with a practical path to production. No follow-up email
-            of the files is needed — they arrived with this request.
+            back to you with a practical path to production.
+          </p>
+        </div>
+      ) : null}
+
+      {status.state === "static" ? (
+        <div className="border border-ink/10 bg-cream p-4 text-sm text-ink">
+          <p className="font-semibold">This public preview is a static site.</p>
+          <p className="mt-2 text-ink/70">
+            GitHub Pages cannot run a server, so this form cannot store a
+            request or drawings here. Call David Engineering at{" "}
+            <a href={site.phoneHref} className="font-semibold text-red">
+              {site.phoneDisplay}
+            </a>{" "}
+            and we will take the job from there.
           </p>
           {status.files.length ? (
-            <p className="mt-2 text-ink/70">Received: {status.files.join(", ")}</p>
+            <p className="mt-2 text-ink/70">
+              Selected files (not uploaded): {status.files.join(", ")}
+            </p>
           ) : null}
         </div>
       ) : null}
